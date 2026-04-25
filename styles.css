@@ -20,6 +20,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 116px;
 }
 
 body {
@@ -30,6 +31,10 @@ body {
     linear-gradient(180deg, #fbf7f0 0%, #f8f1e8 42%, #fbf7f0 100%);
   font-family: "Manrope", Arial, sans-serif;
   line-height: 1.6;
+}
+
+main {
+  padding-top: 108px;
 }
 
 a {
@@ -74,15 +79,16 @@ ul {
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
   width: min(1180px, calc(100% - 40px));
-  margin: 18px auto 0;
   padding: 14px 18px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -92,8 +98,19 @@ ul {
 }
 
 .logo {
+  display: grid;
+  gap: 2px;
   font-weight: 700;
+  line-height: 1.05;
   letter-spacing: -0.02em;
+}
+
+.logo small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .nav {
@@ -120,6 +137,19 @@ ul {
   white-space: nowrap;
 }
 
+.header-cta {
+  min-height: 44px;
+  padding: 10px 18px;
+  color: #fffaf4;
+  background: var(--accent);
+  box-shadow: 0 10px 24px rgba(138, 95, 71, 0.18);
+  white-space: nowrap;
+}
+
+.header-cta:hover {
+  background: var(--accent-dark);
+}
+
 .section {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
@@ -131,8 +161,8 @@ ul {
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
   align-items: center;
   gap: 48px;
-  min-height: calc(100vh - 90px);
-  padding-top: 76px;
+  min-height: calc(100svh - 108px);
+  padding-top: 34px;
 }
 
 .eyebrow {
@@ -240,18 +270,20 @@ ul {
 }
 
 .portrait {
-  display: grid;
-  place-items: center;
   width: 100%;
   aspect-ratio: 1 / 1.05;
   margin-bottom: 28px;
   border-radius: 28px;
-  color: rgba(255, 250, 244, 0.88);
-  background:
-    linear-gradient(145deg, rgba(138, 95, 71, 0.82), rgba(111, 73, 53, 0.92)),
-    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.5), transparent 15rem);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(70px, 11vw, 120px);
+  overflow: hidden;
+  background: var(--accent-soft);
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .card-label {
@@ -519,7 +551,14 @@ details p {
 
 .contact-actions {
   justify-content: center;
-  margin: 30px 0;
+  margin: 14px 0 30px;
+}
+
+.contact-call-text {
+  margin-top: 28px;
+  margin-bottom: 0;
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 .lead-form {
@@ -616,13 +655,28 @@ textarea {
 }
 
 @media (max-width: 680px) {
+  html {
+    scroll-padding-top: 104px;
+  }
+
+  main {
+    padding-top: 96px;
+  }
+
   .site-header {
     width: min(100% - 24px, 1180px);
-    margin-top: 12px;
+    top: 12px;
+    gap: 12px;
+    padding: 12px;
   }
 
   .header-phone {
     display: none;
+  }
+
+  .header-cta {
+    min-height: 40px;
+    padding: 9px 14px;
   }
 
   .section {
@@ -637,7 +691,7 @@ textarea {
   }
 
   .hero {
-    padding-top: 52px;
+    padding-top: 24px;
     gap: 28px;
   }
 
