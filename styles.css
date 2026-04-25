@@ -2,17 +2,26 @@
   --bg: #fbf7f0;
   --bg-soft: #f1e8dc;
   --text: #2f2924;
-  --heading: #241f1b;
+  --heading: #4c2303;
   --muted: #6f6258;
   --accent: #8a5f47;
   --accent-dark: #6f4935;
   --accent-soft: #ead7c6;
   --card: #fffaf4;
   --line: rgba(47, 41, 36, 0.12);
+  --border-glow-soft: rgba(138, 95, 71, 0.08);
+  --border-glow: rgba(138, 95, 71, 0.28);
+  --border-glow-light: rgba(255, 250, 244, 0.78);
   --shadow: 0 24px 70px rgba(71, 48, 32, 0.12);
   --radius-lg: 34px;
   --radius-md: 22px;
   --radius-sm: 14px;
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
 
 * {
@@ -203,6 +212,8 @@ ul {
 }
 
 .button {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -211,11 +222,38 @@ ul {
   border: 1px solid transparent;
   border-radius: 999px;
   font-weight: 700;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(255, 250, 244, 0.18) 43%,
+    rgba(255, 250, 244, 0.72) 50%,
+    rgba(255, 250, 244, 0.18) 57%,
+    transparent 64%,
+    transparent 100%
+  );
+  transform: translateX(-120%);
+  animation: button-shine 3.8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .button:hover {
   transform: translateY(-2px);
+}
+
+.button:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .button-primary {
@@ -226,12 +264,58 @@ ul {
 
 .button-primary:hover {
   background: var(--accent-dark);
+  box-shadow: 0 18px 38px rgba(111, 73, 53, 0.28);
 }
 
 .button-secondary {
   color: var(--accent-dark);
   border-color: var(--line);
   background: rgba(255, 250, 244, 0.72);
+}
+
+.button-secondary::before {
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(138, 95, 71, 0.04) 43%,
+    rgba(138, 95, 71, 0.22) 50%,
+    rgba(138, 95, 71, 0.04) 57%,
+    transparent 64%,
+    transparent 100%
+  );
+}
+
+.button-secondary:hover {
+  border-color: rgba(138, 95, 71, 0.26);
+  box-shadow: 0 14px 30px rgba(71, 48, 32, 0.1);
+}
+
+@keyframes button-shine {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  46%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes border-gradient-rotate {
+  from {
+    --gradient-angle: 0deg;
+  }
+
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button::before {
+    animation: none;
+  }
 }
 
 .note {
@@ -246,6 +330,7 @@ ul {
 .price-card,
 .final-card,
 .soft-panel {
+  --block-bg: rgba(255, 250, 244, 0.76);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: rgba(255, 250, 244, 0.76);
@@ -307,6 +392,7 @@ ul {
 
 .stats div,
 .price-info div {
+  --block-bg: rgba(255, 255, 255, 0.42);
   display: flex;
   justify-content: space-between;
   gap: 16px;
@@ -345,6 +431,7 @@ ul {
 }
 
 .card {
+  --block-bg: rgba(255, 250, 244, 0.8);
   min-height: 172px;
   padding: 24px;
   border: 1px solid var(--line);
@@ -414,6 +501,7 @@ ul {
 }
 
 .step {
+  --block-bg: rgba(255, 250, 244, 0.72);
   padding: 26px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -444,6 +532,7 @@ ul {
 }
 
 .education-card {
+  --block-bg: #fffaf4;
   background: #fffaf4;
 }
 
@@ -456,6 +545,7 @@ ul {
 
 .method-grid article,
 .reviews-grid blockquote {
+  --block-bg: rgba(255, 250, 244, 0.75);
   margin: 0;
   padding: 30px;
   border: 1px solid var(--line);
@@ -469,6 +559,7 @@ ul {
 }
 
 .result-list {
+  --block-bg: rgba(255, 250, 244, 0.66);
   padding: 32px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
@@ -481,6 +572,7 @@ ul {
 }
 
 details {
+  --block-bg: rgba(255, 250, 244, 0.82);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: rgba(255, 250, 244, 0.82);
@@ -500,6 +592,60 @@ summary::-webkit-details-marker {
 details p {
   margin: -6px 24px 24px;
   color: var(--muted);
+}
+
+.hero-card,
+.about-card,
+.education-card,
+.price-card,
+.final-card,
+.soft-panel,
+.stats div,
+.price-info div,
+.card,
+.step,
+.method-grid article,
+.reviews-grid blockquote,
+.result-list,
+details {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--block-bg), var(--block-bg)) padding-box,
+    conic-gradient(
+      from var(--gradient-angle),
+      var(--border-glow-soft) 0deg,
+      var(--border-glow) 42deg,
+      var(--border-glow-light) 58deg,
+      var(--border-glow) 74deg,
+      var(--border-glow-soft) 118deg,
+      rgba(47, 41, 36, 0.1) 180deg,
+      var(--border-glow-soft) 250deg,
+      var(--border-glow) 300deg,
+      var(--border-glow-light) 318deg,
+      var(--border-glow-soft) 360deg
+    ) border-box;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: border-gradient-rotate 12s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-card,
+  .about-card,
+  .education-card,
+  .price-card,
+  .final-card,
+  .soft-panel,
+  .stats div,
+  .price-info div,
+  .card,
+  .step,
+  .method-grid article,
+  .reviews-grid blockquote,
+  .result-list,
+  details {
+    animation: none;
+  }
 }
 
 .price-section {
