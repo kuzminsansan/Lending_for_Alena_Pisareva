@@ -355,21 +355,21 @@
           <a class="button button-primary" href="tel:+73422809505">Позвонить: +7 (342) 280-95-05</a>
           <a class="button button-secondary" href="tel:+73422880868">Позвонить: +7 (342) 288-08-68</a>
         </div>
-        <form class="lead-form" action="#" method="post">
+        <form class="lead-form" id="lead-form" action="#" method="post">
           <label>
             Ваше имя
-            <input type="text" name="name" placeholder="Как к вам обращаться" />
+            <input type="text" name="name" placeholder="Как к вам обращаться" required />
           </label>
           <label>
             Телефон
-            <input type="tel" name="phone" placeholder="+7 ..." />
+            <input type="tel" name="phone" placeholder="+7 ..." required />
           </label>
           <label>
             Комментарий
             <textarea name="message" rows="4" placeholder="Можно коротко: хочу записаться на консультацию"></textarea>
           </label>
           <button class="button button-primary" type="submit">Оставить заявку</button>
-          <p class="form-note">Форма пока демонстрационная. Подключим отправку на следующем этапе.</p>
+          <p class="form-note" id="lead-form-status" aria-live="polite">Форма демонстрационная: заявка сохранится в демо-админке этого браузера.</p>
         </form>
       </div>
     </section>
@@ -377,7 +377,8 @@
 
   <footer class="footer">
     <p>© Алёна Писарева, психолог</p>
-    <p>Отправляя заявку, вы соглашаетесь с Политикой конфиденциальности.</p>
+    <p>Отправляя заявку, вы соглашаетесь с Политикой конфиденциальности. <a href="admin.html">Демо-админка</a></p>
   </footer>
+  <script src="app.js"></script>
 </body>
 </html>

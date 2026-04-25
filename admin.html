@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Демо-админка | Алёна Писарева</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Raleway:wght@700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin-page">
+  <header class="admin-header">
+    <div>
+      <p class="eyebrow">Демонстрационный кабинет</p>
+      <h1>Заявки на консультацию</h1>
+      <p>
+        Здесь можно показать клиенту будущую логику CRM: новые обращения,
+        стадии обработки и заметки по каждому контакту.
+      </p>
+    </div>
+    <div class="admin-header-actions">
+      <span class="admin-counter" id="admin-counter">0 заявок</span>
+      <a class="button button-secondary" href="index.html">На сайт</a>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section class="admin-toolbar">
+      <div>
+        <h2>Воронка обработки</h2>
+        <p>Новая → Связались → Записана → Завершена</p>
+      </div>
+      <button class="button button-secondary" id="admin-reset" type="button">Вернуть демо-заявки</button>
+    </section>
+
+    <p class="admin-empty" id="admin-empty" hidden>
+      Пока заявок нет. Отправьте форму на сайте, и она появится здесь.
+    </p>
+
+    <section class="admin-leads" id="admin-leads" aria-label="Список заявок"></section>
+
+    <section class="admin-note">
+      <h2>Важно для презентации</h2>
+      <p>
+        Это демо-режим: данные хранятся только в браузере через localStorage.
+        После утверждения концепции этот слой можно заменить на простую CRM,
+        базу данных или интеграцию с Telegram/почтой.
+      </p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
