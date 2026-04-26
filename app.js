@@ -51,6 +51,20 @@ function createLead({ name, phone, message }) {
   };
 }
 
+async function notifyVkAboutLead(lead) {
+  const response = await fetch("send-vk.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(lead),
+  });
+
+  if (!response.ok) {
+    throw new Error("VK notification failed");
+  }
+}
+
 function initLeadForm() {
   const form = document.querySelector("#lead-form");
   const status = document.querySelector("#lead-form-status");
@@ -59,7 +73,7 @@ function initLeadForm() {
     return;
   }
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
@@ -74,7 +88,19 @@ function initLeadForm() {
     form.reset();
 
     if (status) {
-      status.textContent = "Заявка сохранена в демо-админке. Для презентации откройте ссылку в футере.";
+      status.textContent = "Заявка сохранена в демо-админке. Отправляем уведомление во ВКонтакте...";
+    }
+
+    try {
+      await notifyVkAboutLead(lead);
+
+      if (status) {
+        status.textContent = "Заявка сохранена, уведомление во ВКонтакте отправлено.";
+      }
+    } catch (error) {
+      if (status) {
+        status.textContent = "Заявка сохранена в демо-админке. Уведомление во ВКонтакте заработает после настройки PHP-файла на хостинге.";
+      }
     }
   });
 }
