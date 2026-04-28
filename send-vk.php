@@ -3,19 +3,20 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
 
+$localConfigPath = __DIR__ . '/config.local.php';
+$localConfig = file_exists($localConfigPath) ? require $localConfigPath : [];
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['ok' => false, 'error' => 'Method not allowed']);
     exit;
 }
 
-$vkToken = getenv('VK_BOT_TOKEN') ?: 'PASTE_VK_GROUP_TOKEN_HERE';
-$vkPeerId = getenv('VK_PEER_ID') ?: 'PASTE_ALENA_PEER_ID_HERE';
+$vkToken = (string)($localConfig['VK_BOT_TOKEN'] ?? getenv('VK_BOT_TOKEN') ?: '');
+$vkPeerId = (string)($localConfig['VK_PEER_ID'] ?? getenv('VK_PEER_ID') ?: '');
+$vkGroupId = (string)($localConfig['VK_GROUP_ID'] ?? getenv('VK_GROUP_ID') ?: '238127506');
 
-if (
-    $vkToken === 'PASTE_VK_GROUP_TOKEN_HERE'
-    || $vkPeerId === 'PASTE_ALENA_PEER_ID_HERE'
-) {
+if ($vkToken === '' || $vkPeerId === '') {
     http_response_code(500);
     echo json_encode(['ok' => false, 'error' => 'VK credentials are not configured']);
     exit;
@@ -45,18 +46,22 @@ $leadDate = $createdAt !== ''
     : date('d.m.Y H:i');
 
 $vkMessage = implode("\n", [
-    'Новая заявка с сайта Алёны Писаревой',
+    'Новая заявка с сайта',
+    'Интегративный психотерапевт Алёна Писарева',
+    'Сообщество: https://vk.com/club' . $vkGroupId,
     '',
-    'Имя: ' . $name,
-    'Телефон: ' . $phone,
-    'Комментарий: ' . ($message !== '' ? $message : 'не указан'),
+    'Имя и фамилия клиента: ' . $name,
+    'Номер телефона: ' . $phone,
+    'Краткое описание проблемы: ' . ($message !== '' ? $message : 'не указано'),
     'Дата: ' . $leadDate,
 ]);
+
+$recipientParam = ctype_digit($vkPeerId) ? 'peer_id' : 'domain';
 
 $request = [
     'access_token' => $vkToken,
     'v' => '5.199',
-    'peer_id' => $vkPeerId,
+    $recipientParam => $vkPeerId,
     'random_id' => random_int(1, PHP_INT_MAX),
     'message' => $vkMessage,
 ];
