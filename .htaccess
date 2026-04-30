@@ -1,0 +1,7 @@
+RewriteEngine On
+
+<FilesMatch "^(config\.local\.(php|json)|\.envrc|\.gitignore)$">
+  Require all denied
+</FilesMatch>
+
+RewriteRule ^data/ - [F,L]

@@ -34,6 +34,7 @@ $name = trim((string)($payload['name'] ?? ''));
 $phone = trim((string)($payload['phone'] ?? ''));
 $message = trim((string)($payload['message'] ?? ''));
 $createdAt = trim((string)($payload['createdAt'] ?? ''));
+$leadId = trim((string)($payload['id'] ?? ''));
 
 if ($name === '' || $phone === '') {
     http_response_code(400);
@@ -44,6 +45,40 @@ if ($name === '' || $phone === '') {
 $leadDate = $createdAt !== ''
     ? date('d.m.Y H:i', strtotime($createdAt))
     : date('d.m.Y H:i');
+
+$lead = [
+    'id' => $leadId !== '' ? $leadId : uniqid('lead-', true),
+    'name' => $name,
+    'phone' => $phone,
+    'message' => $message,
+    'status' => 'new',
+    'note' => '',
+    'createdAt' => $createdAt !== '' ? $createdAt : date('c'),
+];
+
+$dataDir = __DIR__ . '/data';
+$leadsPath = $dataDir . '/leads.json';
+
+if (!is_dir($dataDir) && !mkdir($dataDir, 0755, true) && !is_dir($dataDir)) {
+    http_response_code(500);
+    echo json_encode(['ok' => false, 'error' => 'Cannot create data directory']);
+    exit;
+}
+
+$leads = [];
+
+if (file_exists($leadsPath)) {
+    $storedLeads = json_decode((string)file_get_contents($leadsPath), true);
+    $leads = is_array($storedLeads) ? $storedLeads : [];
+}
+
+array_unshift($leads, $lead);
+
+if (file_put_contents($leadsPath, json_encode($leads, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), LOCK_EX) === false) {
+    http_response_code(500);
+    echo json_encode(['ok' => false, 'error' => 'Cannot save lead']);
+    exit;
+}
 
 $vkMessage = implode("\n", [
     'Новая заявка с сайта',

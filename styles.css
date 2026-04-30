@@ -959,7 +959,8 @@ textarea {
 .admin-toolbar,
 .admin-note,
 .admin-lead-card,
-.admin-empty {
+.admin-empty,
+.admin-login {
   --block-bg: rgba(255, 250, 244, 0.78);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -987,16 +988,71 @@ textarea {
 }
 
 .admin-toolbar h2,
-.admin-note h2 {
+.admin-note h2,
+.admin-login h2 {
   margin-bottom: 8px;
   font-size: clamp(24px, 2.8vw, 34px);
 }
 
 .admin-toolbar p,
 .admin-note p,
-.admin-empty {
+.admin-empty,
+.admin-login p {
   margin-bottom: 0;
   color: var(--muted);
+}
+
+.admin-login,
+.admin-empty,
+.admin-note {
+  padding: 24px;
+}
+
+.admin-login {
+  max-width: 560px;
+}
+
+.admin-login-form,
+.admin-lead-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.admin-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(139, 47, 47, 0.22);
+  border-radius: var(--radius-sm);
+  color: #8b2f2f;
+  background: rgba(139, 47, 47, 0.08);
+  font-weight: 800;
+}
+
+.password-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.password-field input {
+  min-width: 0;
+}
+
+.password-toggle {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  color: var(--accent-dark);
+  background: rgba(210, 226, 236, 0.56);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  border-color: rgba(58, 33, 25, 0.26);
 }
 
 .admin-leads {
@@ -1105,11 +1161,6 @@ textarea {
 
 .admin-delete:hover {
   color: var(--accent-dark);
-}
-
-.admin-empty,
-.admin-note {
-  padding: 24px;
 }
 
 @media (max-width: 980px) {
